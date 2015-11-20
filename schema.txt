@@ -1,0 +1,18 @@
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dated` datetime DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `low` int(11) NOT NULL,
+  `high` int(11) NOT NULL,
+  `no_of_questions` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `test_detail` (
+  `id` int(11) DEFAULT NULL,
+  `x` int(11) DEFAULT NULL,
+  `y` int(11) DEFAULT NULL,
+  `ans` int(11) DEFAULT NULL,
+  `result` int(11) DEFAULT NULL,
+  `time` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
