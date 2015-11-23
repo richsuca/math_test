@@ -68,7 +68,7 @@ elif test_type == TypeMultiply:
 else:
     pass #TODO: Throw error here for Invalid Test Type
 
-#test_desc = test_desc + ", testing run"
+test_desc = test_desc + ", testing run"
 
 #TODO: Add exception handling in case it can't insert
 cur.execute("insert into test(dated, description, low, high, no_of_questions) values ('%s','%s',%s,%s,%s)"
