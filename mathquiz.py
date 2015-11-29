@@ -2,6 +2,7 @@ from datetime import datetime
 import random
 import sqlite3
 import os.path
+import os
 
 while True:
     no_of_questions = input("No. of questions: ")
@@ -70,7 +71,11 @@ def verify_db(db_path):
                      id, dated, description, low_x, high_x, low_y, high_y, questions)''')
         execute_sql('create table test_detail (id, x, y, ans, result, time)')
 
-db_path = os.path.expanduser("~") + "\math-test.db"
+if os.name == 'posix':
+    db_path = os.path.expanduser("~") + "/math-test.db"
+else:
+    db_path = os.path.expanduser("~") + "\math-test.db"
+    
 verify_db(db_path)
 
 if test_type == TypeAdd:
