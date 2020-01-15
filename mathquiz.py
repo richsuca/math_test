@@ -74,7 +74,7 @@ def verify_db(db_path):
 if os.name == 'posix':
     db_path = os.path.expanduser("~") + "/math-test.db"
 else:
-    db_path = os.path.expanduser("~") + "\math-test.db"
+    db_path = os.path.expanduser("~") + r"\math-test.db"
     
 verify_db(db_path)
 
@@ -127,48 +127,51 @@ def question_text():
         return "%s) %s X %s ? "
     else:
         return "Oops, something is wrong in question_text()"
-		
+        
 def get_answer(n, x, y):
-	while True:
-		response = input(question_text() % (n, x, y))
-		try:
-			response_int = int(response)
-			return response_int
-		except ValueError:
-			print("Please enter a valid number for the answer")    	
+    while True:
+        response = input(question_text() % (n, x, y))
+        try:
+            response_int = int(response)
+            return response_int
+        except ValueError:
+            print("Please enter a valid number for the answer")        
 
 question_hist = {}
-			
+            
 def get_question():
-	give_up_after = 3 # if the same x, y or y, x keeps repeating, give up and use it
-	while True:
-		x = random.randrange(low_x, high_x)
-		y = random.randrange(low_y, high_y)
-		if (x, y) in question_hist or (y, x) in question_hist:
-			if (x, y) in question_hist:
-				question_hist[(x, y)] += 1
-				if question_hist[(x, y)] > give_up_after: 
-					break
-			else:
-				question_hist[(y, x)] += 1
-				if question_hist[(y, x)] > give_up_after: 
-					break
-		else:
-			question_hist[(x, y)] = 1
-			break
-	return (x, y)
-			
+    give_up_after = 5 # if the same x, y or y, x keeps repeating, give up and use it
+    while True:
+        x = random.randrange(low_x, high_x)
+        y = random.randrange(low_y, high_y)
+        #print("x:%s,y:%s" % (x,y))
+        if (x, y) in question_hist or (y, x) in question_hist:
+            #print("repeat")
+            if (x, y) in question_hist:
+                question_hist[(x, y)] += 1
+                if question_hist[(x, y)] > give_up_after: 
+                    #print("giving up")
+                    break
+            else:
+                question_hist[(y, x)] += 1
+                if question_hist[(y, x)] > give_up_after: 
+                    break
+        else:
+            question_hist[(x, y)] = 1
+            break
+    return (x, y)
+            
 for n in range(0,no_of_questions):
-	(x, y) = get_question()
-	start_timer = datetime.now()
-	ans = get_answer(n+1, x, y)
-	stop_timer = datetime.now()
-	duration = stop_timer - start_timer
-	test.append(Question(x, y, ans, duration.seconds))
-	result = 1 if calculate(x,y) == ans else 0
-	sql = "insert into test_detail(id, x, y, ans, result, time) values (?,?,?,?,?,?)"
-	params = (test_id, x, y, ans, result, duration.seconds)
-	execute_sql(sql, params)
+    (x, y) = get_question()
+    start_timer = datetime.now()
+    ans = get_answer(n+1, x, y)
+    stop_timer = datetime.now()
+    duration = stop_timer - start_timer
+    test.append(Question(x, y, ans, duration.seconds))
+    result = 1 if calculate(x,y) == ans else 0
+    sql = "insert into test_detail(id, x, y, ans, result, time) values (?,?,?,?,?,?)"
+    params = (test_id, x, y, ans, result, duration.seconds)
+    execute_sql(sql, params)
 
 def result_text():
     if test_type == TypeAdd:
@@ -188,7 +191,7 @@ print('Your Report')
 for q in test:
         if q.result == 0:
             print((result_text() + " = %s, not %s (Wrong) in %s seconds") 
-					% (q.x, q.y, calculate(q.x, q.y), q.ans, q.time))
+                    % (q.x, q.y, calculate(q.x, q.y), q.ans, q.time))
             no_of_misses += 1
 
 print("You got %s/%s" % (no_of_questions - no_of_misses, no_of_questions))
