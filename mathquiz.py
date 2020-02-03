@@ -142,8 +142,8 @@ question_hist = {}
 def get_question():
     give_up_after = 5 # if the same x, y or y, x keeps repeating, give up and use it
     while True:
-        x = random.randrange(low_x, high_x)
-        y = random.randrange(low_y, high_y)
+        x = random.randrange(low_x, high_x + 1)
+        y = random.randrange(low_y, high_y + 1)
         #print("x:%s,y:%s" % (x,y))
         if (x, y) in question_hist or (y, x) in question_hist:
             #print("repeat")
